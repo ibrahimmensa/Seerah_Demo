@@ -46,15 +46,16 @@ namespace OpenAI
             scroll.verticalNormalizedPosition = 0;
         }
 
-        private async void SendReply()
+        public async void SendReply()
         {
+            inputField.text = "Tell The Story of Prophet Musa according to Islamic History";
             var newMessage = new ChatMessage()
             {
                 Role = "user",
-                Content = inputField.text/*"tell me the story of prophet Musa"*/
+                Content = inputField.text/*"Tell the story of Prophet Musa"*/
             };
             
-            AppendMessage(newMessage);
+            //AppendMessage(newMessage);
 
             if (messages.Count == 0) newMessage.Content = prompt + "\n" + inputField.text; 
             
