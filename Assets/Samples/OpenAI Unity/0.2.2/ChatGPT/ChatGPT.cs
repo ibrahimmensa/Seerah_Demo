@@ -102,8 +102,10 @@ namespace OpenAI
             inputField.enabled = true;
         }
 
-        public void onClickBack()
+        public void onClickBack(int i)
         {
+            SceneHandler.Instance.isReturningFromChatGPT = true;
+            SceneHandler.Instance.menuNumber = i;
             SceneManager.LoadScene(1);
         }
 
