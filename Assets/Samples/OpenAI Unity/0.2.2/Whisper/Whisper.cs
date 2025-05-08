@@ -13,12 +13,13 @@ namespace Samples.Whisper
         [SerializeField] private Dropdown dropdown;
         
         private readonly string fileName = "output.wav";
-        private readonly int duration = 5;
+        private readonly int duration = 8;
         
         private AudioClip clip;
         private bool isRecording;
         private float time;
         private OpenAIApi openai = new OpenAIApi();
+        controlHandler controller;
 
         private void Start()
         {
@@ -29,7 +30,7 @@ namespace Samples.Whisper
             {
                 dropdown.options.Add(new Dropdown.OptionData(device));
             }
-            recordButton.onClick.AddListener(StartRecording);
+            //recordButton.onClick.AddListener(StartRecording);
             dropdown.onValueChanged.AddListener(ChangeMicrophone);
             
             var index = PlayerPrefs.GetInt("user-mic-device-index");
@@ -42,8 +43,9 @@ namespace Samples.Whisper
             PlayerPrefs.SetInt("user-mic-device-index", index);
         }
         
-        private void StartRecording()
+        public void StartRecording(controlHandler currentController)
         {
+            controller = currentController;
             isRecording = true;
             recordButton.enabled = false;
 
@@ -69,13 +71,18 @@ namespace Samples.Whisper
                 FileData = new FileData() {Data = data, Name = "audio.wav"},
                 // File = Application.persistentDataPath + "/" + fileName,
                 Model = "whisper-1",
-                Language = "en"
+                Language = "ar"
             };
             var res = await openai.CreateAudioTranscription(req);
 
             progressBar.fillAmount = 0;
             message.text = res.Text;
             recordButton.enabled = true;
+            controller.playBtn.interactable = true;
+            controller.nextBtn.interactable = true;
+            controller.PreviousBtn.interactable = true;
+            controller.recordBtn.interactable = true;
+            controller.recordingToString(message.text);
         }
 
         private void Update()
@@ -98,5 +105,6 @@ namespace Samples.Whisper
         {
             SceneManager.LoadScene(1);
         }
+
     }
 }

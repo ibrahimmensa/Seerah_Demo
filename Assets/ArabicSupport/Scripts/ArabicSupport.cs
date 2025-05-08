@@ -43,6 +43,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 #endregion
 
@@ -86,6 +87,7 @@ namespace ArabicSupport
 						arabicToIgnore += word + " ";
 						
 					}
+					//Debug.Log(word);
 				}
 				if(arabicToIgnore != "")
 					result += Fix(arabicToIgnore);

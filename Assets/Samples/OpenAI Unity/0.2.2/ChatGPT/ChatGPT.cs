@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using LMNT;
 using UnityEngine.SceneManagement;
+using TMPro;
+using System.Collections;
 
 namespace OpenAI
 {
@@ -14,11 +16,12 @@ namespace OpenAI
         
         [SerializeField] private RectTransform sent;
         [SerializeField] private RectTransform received;
-        [SerializeField] private LMNTSpeech narrator;
+        //[SerializeField] private LMNTSpeech narrator;
 
         private float height;
         private OpenAIApi openai = new OpenAIApi();
-
+        public TMP_Text story;
+        public bool isScrolling = false;
         private List<ChatMessage> messages = new List<ChatMessage>();
         private string prompt = "Act as a random stranger in a chat room and reply to the questions. Don't break character. Don't ever mention that you are an AI model.";
 
@@ -28,9 +31,14 @@ namespace OpenAI
             //Invoke("test", 2);
         }
 
+        private void OnEnable()
+        {
+            startScrollingStory();
+        }
+
         void test()
         {
-            StartCoroutine(narrator.Talk());
+            //StartCoroutine(narrator.Talk());
         }
 
         private void AppendMessage(ChatMessage message)
@@ -48,7 +56,7 @@ namespace OpenAI
 
         public async void SendReply()
         {
-            inputField.text = "Tell The Story of Prophet Musa according to Islamic History";
+            inputField.text = "Tell The detailed Story of Prophet Musa according to Ar - Raheeq Al - Makhtum (The Sealed Nectar) — by Safi-ur-Rahman Al-Mubarakpuri";
             var newMessage = new ChatMessage()
             {
                 Role = "user",
@@ -64,7 +72,7 @@ namespace OpenAI
             button.enabled = false;
             inputField.text = "";
             inputField.enabled = false;
-            narrator.dialogue = "";
+            //narrator.dialogue = "";
             // Complete the instruction
             var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
             {
@@ -77,9 +85,10 @@ namespace OpenAI
                 var message = completionResponse.Choices[0].Message;
                 message.Content = message.Content.Trim();
                 
-                narrator.dialogue = message.Content;
+                //narrator.dialogue = message.Content;
+                
                 Debug.Log(message.Content);
-                StartCoroutine(narrator.Talk());
+                //StartCoroutine(narrator.Talk());
                 messages.Add(message);
                 Debug.Log(messages[messages.Count - 1].Content);
                 AppendMessage(message);
@@ -96,6 +105,27 @@ namespace OpenAI
         public void onClickBack()
         {
             SceneManager.LoadScene(1);
+        }
+
+        //public void OnEnable()
+        //{
+        //    narrator.dialogue = story.text;
+        //    StartCoroutine(narrator.Talk());
+        //}
+
+        public void startScrollingStory()
+        {
+            isScrolling = true;
+            StartCoroutine(startScrolling());
+        }
+
+        IEnumerator startScrolling()
+        {
+            while (isScrolling)
+            {
+                yield return new WaitForSeconds(0.1f);
+                story.transform.position = new Vector3(story.transform.position.x, story.transform.position.y + 2.5f, story.transform.position.z);
+            }
         }
     }
 }

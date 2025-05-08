@@ -1,0 +1,5 @@
+Assets/Resources/introVideos/*.mp4 filter=lfs diff=lfs merge=lfs -text
+Assets/Resources/introVideos/Surah[[:space:]]Falaq.mp4 filter=lfs diff=lfs merge=lfs -text
+Assets/Resources/introVideos/Surah[[:space:]]Ikhlas.mp4 filter=lfs diff=lfs merge=lfs -text
+Assets/Resources/introVideos/Surah[[:space:]]Naas.mp4 filter=lfs diff=lfs merge=lfs -text
+Assets/Resources/introVideos/SurahFatiha.mp4 filter=lfs diff=lfs merge=lfs -text

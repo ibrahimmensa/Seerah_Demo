@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public GameObject loginScreen, MainMenu;
+    public GameObject loginScreen, MainMenu, surahsMenu, ProphetStoryMenu;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +23,15 @@ public class MainMenuManager : MonoBehaviour
         if (SceneHandler.Instance.isStart)
         {
             loginScreen.SetActive(false);
-            MainMenu.SetActive(true);
+            if (SceneHandler.Instance.isReturningFromWhisper)
+            {
+                surahsMenu.SetActive(true);
+                SceneHandler.Instance.isReturningFromWhisper = false;
+            }
+            else
+            {
+                MainMenu.SetActive(true);
+            }
         }
         else
         {
@@ -31,8 +39,9 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    public void OnClickWhisper()
+    public void OnClickWhisper(int ayatNum)
     {
+        SceneHandler.Instance.ayatNumber = ayatNum;
         SceneManager.LoadScene(3);
     }
 
